@@ -86,14 +86,9 @@ defmodule OpentelemetryPlugTest do
 
   defp base_url do
     info = :ranch.info(MyRouter.HTTP)
-    port = Keyword.fetch!(info, :port)
-    ip = Keyword.fetch!(info, :ip)
+    port = Map.fetch!(info, :port)
+    ip = Map.fetch!(info, :ip)
     "http://#{:inet.ntoa(ip)}:#{port}"
-  end
-
-  defp request(:head = verb, path) do
-    {:ok, status, headers} = :hackney.request(verb, base_url() <> path, [], "", [])
-    {status, headers, nil}
   end
 
   defp request(verb, path, headers \\ [], body \\ "") do
